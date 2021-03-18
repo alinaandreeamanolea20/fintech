@@ -1,19 +1,20 @@
 from fastapi import APIRouter
 
-from api.models import NewStock
-from finance.stocks import StocksRepo
+from api.models import NewStock, StockInfo
+from finance.repo import StocksRepo
 
 router = APIRouter(prefix="/stocks")
 
 
-@router.post("/")
+@router.post("/", response_model=StockInfo)
 def add_stock(new_stock: NewStock):
     repo = StocksRepo()
-    repo.add(new_stock.name)
+    new_stock = repo.add(new_stock.name)
+    return StockInfo.from_orm(new_stock)
 
 
 @router.get("/")
 def get_stocks():
     repo = StocksRepo()
-    return repo.get_all()
+    return list(map(StockInfo.from_orm, repo.get_all()))
 
