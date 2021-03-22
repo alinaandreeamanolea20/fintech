@@ -1,6 +1,7 @@
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
 
-from api.models import NewStock, StockInfo
+from api.models import NewStock, StockInfo, StockRecommendations
 from finance.repo import StocksRepo
 
 router = APIRouter(prefix="/stocks")
@@ -18,3 +19,11 @@ def get_stocks():
     repo = StocksRepo()
     return list(map(StockInfo.from_orm, repo.get_all()))
 
+
+@router.get("/{stock_id}/recommendations")
+def get_stock_recommendations(stock_id: str):
+    repo = StocksRepo()
+    stock = repo.get_by_id(stock_id)
+    if not stock:
+        return JSONResponse(status_code=404, content="The specified stock was not added.")
+    return StockRecommendations.from_orm(stock[0])

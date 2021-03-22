@@ -18,6 +18,9 @@ class StocksRepo(metaclass=SingletonMeta):
     def get_all(self):
         return self.stocks
 
+    def get_by_id(self, id: str):
+        return [s for s in self.stocks if s.id == id]
+
     def load(self):
         if not os.path.exists(self.file):
             self.stocks = []
@@ -25,7 +28,7 @@ class StocksRepo(metaclass=SingletonMeta):
             with open(self.file, 'r') as f:
                 current_config = json.loads(f.read())
             for name in current_config:
-                self.add(name)
+                self.stocks.append(Stock(name))
 
     def __save_to_config(self, name):
         if not os.path.exists(self.file):
