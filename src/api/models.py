@@ -6,6 +6,11 @@ class NewStock(BaseModel):
   name: str = Field(description="Short name of the stock, eg MSFT, TSLA")
 
 
+class NewDiagram(BaseModel):
+  start_date: str = Field(description="From which date to start, ex 2020-01-20")
+  end_date: str = Field(description="On which date to end, ex 2020-03-31")
+
+
 class StockInfo(BaseModel):
   id: str = Field(description="Short name of the stock, eg MSFT, TSLA")
   sector: str = Field(description="")

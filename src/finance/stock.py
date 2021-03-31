@@ -16,3 +16,9 @@ class Stock:
             if item[0] == "To Grade":
                 grades = item[1].values.tolist()
         self.rec = list(map(lambda x, y: {"firm": x, "grade": y}, firms, grades))
+
+    def draw_diagram(self, start_date: str, end_date: str):
+        print(start_date)
+        print(end_date)
+        # check all properties names of an object
+        print(self.ticker.__dict__.keys())
