@@ -1,4 +1,5 @@
 import yfinance
+from matplotlib import pyplot
 
 
 class Stock:
@@ -18,7 +19,19 @@ class Stock:
         self.rec = list(map(lambda x, y: {"firm": x, "grade": y}, firms, grades))
 
     def draw_diagram(self, start_date: str, end_date: str):
-        print(start_date)
-        print(end_date)
         # check all properties names of an object
-        print(self.ticker.__dict__.keys())
+        # print(self.ticker.__dict__.keys())
+        # check all function names of an object
+        # print(dir(self.ticker))
+        history = self.ticker.history(start=start_date, end=end_date)
+        close = history['Close']
+        print(close)
+        figure, axes = pyplot.subplots(figsize=(16, 9))
+
+        axes.plot(close.index, close, label='Diagram of stock')
+
+        axes.set_xlabel('Date')
+        axes.set_ylabel('Close price')
+        axes.legend()
+
+        pyplot.savefig(f"diagram-{self.id}.png")

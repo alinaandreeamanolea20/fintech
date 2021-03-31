@@ -5,6 +5,10 @@ from singleton import SingletonMeta
 from finance.stock import Stock
 
 
+class StockNotFound(Exception):
+    pass
+
+
 class StocksRepo(metaclass=SingletonMeta):
     stocks = []
     file = 'stocks.json'
@@ -19,7 +23,10 @@ class StocksRepo(metaclass=SingletonMeta):
         return self.stocks
 
     def get_by_id(self, id: str):
-        return [s for s in self.stocks if s.id == id]
+        ids = [s for s in self.stocks if s.id == id]
+        if not ids:
+            raise StockNotFound()
+        return ids[0]
 
     def load(self):
         if not os.path.exists(self.file):
